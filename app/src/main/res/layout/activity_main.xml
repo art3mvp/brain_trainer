@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+
+    <TextView
+        android:id="@+id/textViewScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="@string/d_d"
+        android:padding="@dimen/padding_options"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textSize="@dimen/options_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewTimer2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="@dimen/padding_options"
+        android:text="timer"
+        android:textColor="@android:color/holo_green_light"
+        android:textSize="@dimen/options_size"/>
+
+
+
+    <TextView
+        android:id="@+id/textViewMath"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:padding="16dp"
+        android:textSize="32sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewScore"
+        app:layout_constraintBottom_toTopOf="@id/textViewOption1"
+        tools:text="timer!" />
+
+    <TextView
+        android:id="@+id/textViewOption1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/holo_purple"
+        android:text="@string/option_1"
+        android:padding="@dimen/padding_options"
+        android:onClick="onClickAnswer"
+        android:textSize="@dimen/options_size"
+        app:layout_constraintEnd_toStartOf="@id/textViewOption3"
+        app:layout_constraintBottom_toTopOf="@id/textViewOption2"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewOption2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/holo_blue_light"
+        android:text="@string/option_2"
+        android:padding="@dimen/padding_options"
+        android:onClick="onClickAnswer"
+        android:textSize="@dimen/options_size"
+        app:layout_constraintEnd_toStartOf="@id/textViewOption4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewOption3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/holo_green_light"
+        android:text="@string/option_3"
+        android:padding="@dimen/padding_options"
+        android:onClick="onClickAnswer"
+        android:textSize="@dimen/options_size"
+        app:layout_constraintStart_toEndOf="@id/textViewOption1"
+        app:layout_constraintBottom_toTopOf="@id/textViewOption2"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewOption4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/holo_orange_light"
+        android:text="@string/option_4"
+        android:onClick="onClickAnswer"
+        android:padding="@dimen/padding_options"
+        android:textSize="@dimen/options_size"
+        app:layout_constraintStart_toEndOf="@id/textViewOption2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
