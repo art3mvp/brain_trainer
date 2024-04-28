@@ -17,6 +17,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -30,8 +32,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView textViewOption4;
     private TextView textViewScore;
     private TextView textViewMath;
-    private SharedPreferences preferences;
-
     private String question;
     private int rightAnswer;
     private int rightAnswerPosition;
@@ -39,10 +39,10 @@ public class MainActivity extends AppCompatActivity {
     private int min = 5;
     private int max = 30;
     private ArrayList<TextView> options = new ArrayList<>();
-
     private int countOfQuestions = 0;
     private int countOfRightAnswers = 0;
     private boolean gameOver = false;
+    private MainViewModel viewModel;
 
 
     @Override
@@ -57,33 +57,58 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        preferences = getApplication().getSharedPreferences("score", Context.MODE_PRIVATE);
+        viewModel = new ViewModelProvider(this).get(MainViewModel.class);
+
         initViews();
         setTimer();
+        setOnClickListeners();
         playNext();
     }
 
-    private void setTimer() {
-        CountDownTimer timer = new CountDownTimer(5000, 1000) {
+    private void setOnClickListeners() {
+        textViewOption1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickAnswer(view);
+            }
+        });
 
+        textViewOption2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickAnswer(view);
+            }
+        });
+
+        textViewOption3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickAnswer(view);
+            }
+        });
+
+        textViewOption4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickAnswer(view);
+            }
+        });
+    }
+
+    private void setTimer() {
+        CountDownTimer timer = new CountDownTimer(70000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                int seconds = (int) (millisUntilFinished / 1000);
-                seconds++;
-                textViewTimer.setText(Integer.toString(seconds));
+                textViewTimer.setText(setTimeAndColor(millisUntilFinished));
             }
 
             @Override
             public void onFinish() {
-                textViewTimer.setText("0");
                 gameOver = true;
-                int max = preferences.getInt("score", 0);
-                if (max <= countOfRightAnswers) {
-                    SharedPreferences.Editor myEdit = preferences.edit();
-                    myEdit.putInt("score", countOfRightAnswers);
-                    myEdit.commit();
-                }
-                Intent intent = ScoreActivity.newIntent(MainActivity.this, Integer.toString(countOfRightAnswers));
+                viewModel.saveScore(MainActivity.this, countOfRightAnswers);
+                Intent intent = ScoreActivity.newIntent(
+                        MainActivity.this, countOfRightAnswers
+                );
                 startActivity(intent);
             }
         };
@@ -103,8 +128,6 @@ public class MainActivity extends AppCompatActivity {
         options.add(textViewOption2);
         options.add(textViewOption3);
         options.add(textViewOption4);
-
-        playNext();
     }
 
     private void playNext() {
@@ -121,11 +144,17 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private String getTime(long millis) {
+    private String setTimeAndColor(long millis) {
         int seconds = (int) (millis / 1000);
+        seconds++;
         int minutes = seconds / 60;
-        seconds = minutes % 60;
-        return String.format("%02d:%02d", minutes, seconds);
+        int restSeconds = seconds % 60;
+        if (seconds <= 10) {
+            textViewTimer.setTextColor(
+                    getResources().getColor(android.R.color.holo_red_dark)
+            );
+        }
+        return String.format("%02d:%02d", minutes, restSeconds);
     }
 
     private void questionGeneration() {
@@ -150,7 +179,6 @@ public class MainActivity extends AppCompatActivity {
         do {
             result = (int) (Math.random() * max * 2 + 1) - (max - min);
         } while (result == rightAnswer);
-
         return result;
     }
 
